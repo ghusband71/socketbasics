@@ -6,10 +6,26 @@ var io = require("socket.io")(http);
 
 app.use(express.static(__dirname + "/public"));
 
-io.on("connection", function (){
+io.on("connection", function (socket){
 	console.log("user connected via socket.io");
+
+	socket.on("message", function(message){
+		console.log("Message received..." + message.text);
+
+		//io.emit sends to everbody
+
+		// sends to everybody except the sender
+		socket.broadcast.emit("message", message);
+	})
+
+	socket.emit("message", {
+		text: "Welcome to the chat application!"
+	});
 });
 
 http.listen(PORT, function() {
 	console.log("server stated");
 })
+
+// can run this from chrome dev tools console to send message to others
+//socket.emit("message", { text: "Welcome to the chat application!" });

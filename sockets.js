@@ -4,6 +4,9 @@ var app = express();
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
 
+var moment = require("moment");
+var now = moment();
+
 app.use(express.static(__dirname + "/public"));
 
 io.on("connection", function (socket){
